@@ -6,9 +6,11 @@ import {
   setLimit,
   setSort,
   setOrder,
+  setFilterText,
 } from '../../store/ducks/debtSlice'
 import { moneyFormat } from '../../utils/format'
 import DataTable from 'react-data-table-component'
+import { ClearButton, TextField } from './styles'
 
 const columns = [
   {
@@ -21,11 +23,32 @@ const columns = [
     selector: 'value',
     sortable: true,
     cell: row => moneyFormat(row.value)
+  },
+  {
+    name: 'Desde',
+    selector: 'date',
+    sortable: true,
+    cell: row => row.date
   }
 ]
 
+const FilterComponent = ({ filterText, onFilter, onClear }) => (
+  <>
+    <TextField
+      id="search"
+      type="text"
+      placeholder="Filtrar pelo nome"
+      aria-label="Search Input"
+      value={filterText}
+      onChange={onFilter}
+    />
+    <ClearButton type="button" onClick={onClear}>X</ClearButton>
+  </>
+);
+
 const DatatableDebt = () => {
   const dispatch = useDispatch()
+  const filterText = useSelector(state => state.debt.filterText)
   const debts = useSelector(state => state.debt.data)
   const isFetching = useSelector(state => state.debt.isFetching)
   const total = useSelector(state => state.debt.total)
@@ -48,11 +71,31 @@ const DatatableDebt = () => {
       'value': 'items.value',
     }
 
-    const sort = mapSort[column.selector]
+    const sort = mapSort[column.selector] || column.selector
 
     dispatch(setSort(sort))
-    dispatch(setOrder(sortDirection))
+    dispatch(setOrder(sortDirection.toUpperCase()))
+    dispatch(setListAsync())
   })
+
+  const subHeaderComponentMemo = React.useMemo(() => {
+    const handleClear = () => {
+      if (filterText) {
+        dispatch(setPage(1))
+        dispatch(setFilterText(''))
+        dispatch(setListAsync())
+      }
+    };
+
+    return <FilterComponent
+      onFilter={e => {
+        dispatch(setFilterText(e.target.value))
+        dispatch(setListAsync())
+      }}
+      onClear={handleClear}
+      filterText={filterText}
+    />;
+  }, [filterText]);
 
   useEffect(() => {
     dispatch(setListAsync())
@@ -60,7 +103,9 @@ const DatatableDebt = () => {
 
   return (
     <DataTable
-      title="Lista de inadiplentes"
+      title="Lista de inadimplentes"
+      subHeader
+      subHeaderComponent={subHeaderComponentMemo}
       columns={columns}
       data={debts}
       progressPending={isFetching}

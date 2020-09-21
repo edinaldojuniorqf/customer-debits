@@ -4,16 +4,20 @@ import debtApi from '../../api/debt'
 export const debtSlice = createSlice({
   name: 'debt',
   initialState: {
+    filterText: '',
     data: [],
     page: 1,
     limit: 10,
-    sort: 'id',
+    sort: '',
     order: 'ASC',
     total: 0,
     error: false,
     isFetching: false,
   },
   reducers: {
+    setFilterText: (state, { payload }) => {
+      state.filterText = payload
+    },
     setList: (state, { payload }) => {
       state.data = payload.data
       state.total = payload.total
@@ -24,11 +28,11 @@ export const debtSlice = createSlice({
     setLimit: (state, { payload }) => {
       state.limit = payload
     },
-    setSort: (state, sort) => {
-      state.sort = sort
+    setSort: (state, { payload }) => {
+      state.sort = payload
     },
-    setOrder: (state, order) => {
-      state.order = order
+    setOrder: (state, { payload }) => {
+      state.order = payload
     },
     setTotal: (state, { payload }) => {
       state.total = payload
@@ -43,6 +47,7 @@ export const debtSlice = createSlice({
 })
 
 export const {
+  setFilterText,
   setList,
   setTotal,
   setPage,
@@ -57,8 +62,14 @@ export const setListAsync = () => async (dispatch, getState) => {
   try {
     dispatch(setIsFetching(true))
 
-    const { page, limit, sort, order } = getState().debt
-    const response = await debtApi.list({ page, limit, sort, order })
+    const { page, limit, sort, order, filterText } = getState().debt
+    const response = await debtApi.list({
+      page,
+      limit,
+      sort,
+      order,
+      q: filterText,
+    })
     const { data: reponseData } = response
     let { data, total } = reponseData
     
