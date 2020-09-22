@@ -13,7 +13,6 @@
     "test": "cross-env NODE_ENV=test jest"
   },
   "dependencies": {
-    "@reduxjs/toolkit": "^1.4.0",
     "cors": "^2.8.5",
     "cross-env": "^7.0.2",
     "express": "^4.17.1",
