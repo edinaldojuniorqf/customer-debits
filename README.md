@@ -9,7 +9,7 @@
 Para cadastrar clientes, fazer requisião POST para `http://localhost:3333/customer` e  enviar no corpo da requição
 ```JSON
 {
-	"name": "Fulano"
+  "name": "Fulano"
 }
 ```
 o retorno deve ser algo como
@@ -23,22 +23,22 @@ o retorno deve ser algo como
 ```
 
 
-Para cadastrar os débitos de um cliente fazer solicitação POST para `http://localhost:3333//debt` e enviar no corpo da requisição
+Para cadastrar os débitos de um cliente fazer solicitação POST para `http://localhost:3333/debt` e enviar no corpo da requisição
 ```JSON
 {
-	"date": "2020-09-21",
-	"customerId": "5f6be6004ba8ce436a65d6bd",
-	"items": [
-		{
-			"value": 900
-		},
-		{
-			"value": 200
-		},
-		{
-			"value": 199
-		}
-	]
+  "date": "2020-09-21",
+  "customerId": "5f6be6004ba8ce436a65d6bd",
+  "items": [
+    {
+      "value": 900
+    },
+    {
+      "value": 200
+    },
+    {
+      "value": 199
+    }
+  ]
 }
 ```
 o retorno deve ser algo como
