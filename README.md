@@ -6,7 +6,7 @@
 ### `docker-compose up`
 
 
-Para cadastrar clientes, fazer requisião POST para `http://localhost:3333/customer` e  enviar no corpo da requição
+Para cadastrar clientes, fazer requisição POST para `http://localhost:3333/customer` e  enviar no corpo da requisição
 ```JSON
 {
   "name": "Fulano"
@@ -23,7 +23,7 @@ o retorno deve ser algo como
 ```
 
 
-Para cadastrar os débitos de um cliente fazer solicitação POST para `http://localhost:3333/debt` e enviar no corpo da requisição
+Para cadastrar os débitos de um cliente fazer requisição POST para `http://localhost:3333/debt` e enviar no corpo da requisição
 ```JSON
 {
   "date": "2020-09-21",
